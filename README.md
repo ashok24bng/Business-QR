@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<!-- saved from url=(0070)file:///C:/Users/ASUS/Downloads/Sri%20Sai%20Enterprises%20Lending.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+  
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>10-Week Lending | Sri Sai Enterprises</title>
     <style>
