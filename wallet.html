@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/wallet.css">
+    <link rel="stylesheet" href="css/styles.css"> 
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <a href="dashboard.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                 </a>
+            <h1 class="gradient-text">My Wallet</h1>
+            <div></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Wallet Cards -->
+        <div class="grid">
+            <div class="glass-card wallet-card">
+                <div class="wallet-icon">
+                    <i class="fas fa-sack-dollar"></i>
+                </div>
+                <h3>Earning Wallet</h3>
+                <div class="wallet-balance">₹5,240.00</div>
+                <button class="btn-primary">
+                    <i class="fas fa-exchange-alt"></i>
+                    Transfer to Main
+                </button>
+            </div>
+
+            <div class="glass-card wallet-card">
+                <div class="wallet-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Bonus Wallet</h3>
+                <div class="wallet-balance">₹750.00</div>
+                <button class="btn-primary">
+                    <i class="fas fa-exchange-alt"></i>
+                    Transfer to Main
+                </button>
+            </div>
+
+            <div class="glass-card wallet-card">
+                <div class="wallet-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h3>Main Wallet</h3>
+                <div class="wallet-balance">₹8,490.00</div>
+                <button class="btn-primary" onclick="showWithdrawModal()">
+                    <i class="fas fa-money-bill-wave"></i>
+                    Withdraw
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <section class="recent-activity">
+            <h2 class="gradient-text">Recent Activity</h2>
+            <div class="glass-card">
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fas fa-arrow-up status-error"></i>
+                        <div class="activity-details">
+                            <h4>Withdrawal to Bank</h4>
+                            <p>Mar 15, 2024</p>
+                        </div>
+                        <div class="activity-amount status-error">-₹2,000</div>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-arrow-right status-success"></i>
+                        <div class="activity-details">
+                            <h4>Transfer from Earning</h4>
+                            <p>Mar 14, 2024</p>
+                        </div>
+                        <div class="activity-amount status-success">+₹1,500</div>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-qrcode status-success"></i>
+                        <div class="activity-details">
+                            <h4>QR Code Earnings</h4>
+                            <p>Mar 14, 2024</p>
+                        </div>
+                        <div class="activity-amount status-success">+₹750</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content glass-effect">
+            <span class="close" onclick="closeWithdrawModal()">&times;</span>
+            <h2 class="gradient-text">Withdraw Funds</h2>
+            <form id="withdrawForm">
+                <div class="form-group">
+                    <label><i class="fas fa-rupee-sign"></i> Amount</label>
+                    <input type="number" min="100" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-university"></i> Bank Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-hashtag"></i> Account Number</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-code"></i> IFSC Code</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Account Holder Name</label>
+                    <input type="text" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <span>Submit Withdrawal</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/wallet.js"></script>
+</body>
+</html> 

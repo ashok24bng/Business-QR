@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - QR Card</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/pages.css"/>
+  <link rel="stylesheet" href="css/profile.css"/>
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="animated-bg"></div>
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <a href="dashboard.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <h1 class="gradient-text">Profile</h1>
+      <div></div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Profile Info -->
+    <div class="glass-card profile-info">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-details">
+          <h2 id="profileName">Loading...</h2>
+          <p id="profileEmail">Loading...</p>
+          <p id="profilePlan">Loading...</p>
+          <p id="profileJoinDate">Loading...</p>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat-item">
+          <i class="fas fa-qrcode"></i>
+          <div class="stat-details">
+            <h3>Total QR Codes</h3>
+            <div class="stat-value" id="totalQRCount">0</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-wallet"></i>
+          <div class="stat-details">
+            <h3>Total Earnings</h3>
+            <div class="stat-value" id="totalEarningsValue">₹0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Grid -->
+    <div class="settings-grid">
+      <!-- Personal Information -->
+      <div class="glass-card settings-section">
+        <h2 class="gradient-text">Personal Information</h2>
+        <form id="personalInfoForm">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" name="fullName" id="fullNameInput" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Phone Number</label>
+            <input type="tel" name="phoneNumber" id="phoneNumberInput" readonly>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" name="email" id="emailInput" readonly>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-city"></i> City</label>
+            <input type="text" name="city" id="cityInput">
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </form>
+      </div>
+
+      <!-- Change Password -->
+      <div class="glass-card settings-section">
+        <h2 class="gradient-text">Change Password</h2>
+        <form id="passwordForm">
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Current Password</label>
+            <input type="password" name="currentPassword" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-key"></i> New Password</label>
+            <input type="password" name="newPassword" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-check"></i> Confirm Password</label>
+            <input type="password" name="confirmPassword" required>
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-key"></i> Update Password
+          </button>
+        </form>
+      </div>
+
+      <!-- Bank Details -->
+      <div class="glass-card settings-section">
+        <h2 class="gradient-text">Bank Details</h2>
+
+        <button id="toggleBankDetails" class="btn-secondary" style="margin-bottom: 15px;">
+          View Bank Details
+        </button>
+
+        <div id="bankDetailsDisplay" style="display: none; margin-bottom: 20px;">
+          <p><strong>Bank Name:</strong> <span id="displayBankName">-</span></p>
+          <p><strong>Account Holder:</strong> <span id="displayAccountHolder">-</span></p>
+          <p><strong>Account Number:</strong> <span id="displayAccountNumber">-</span></p>
+          <p><strong>IFSC Code:</strong> <span id="displayIfscCode">-</span></p>
+        </div>
+
+        <form id="bankDetailsForm">
+          <div class="form-group">
+            <label><i class="fas fa-university"></i> Bank Name</label>
+            <input type="text" name="bankName" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Account Holder Name</label>
+            <input type="text" name="accountHolder" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-hashtag"></i> Account Number</label>
+            <input type="text" name="accountNumber" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-code"></i> IFSC Code</label>
+            <input type="text" name="ifscCode" required>
+          </div>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Save Bank Details
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+  <script type="module" src="js/firebase-config.js"></script>
+
+  <!-- Custom Script for Profile -->
+  <script type="module" src="js/profile.js"></script>
+</body>
+</html>

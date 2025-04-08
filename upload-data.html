@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Data - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .upload-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .upload-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+        .file-input {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(45deg, #8B5CF6, #EC4899);
+            transition: width 0.3s ease;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <div class="upload-container">
+        <a href="dashboard.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
+        
+        <div class="upload-box">
+            <h1 class="gradient-text">Upload QR Data</h1>
+            <input type="file" id="csvFile" accept=".csv,.txt" class="file-input">
+            <button class="submit-button" id="uploadBtn">
+                <i class="fas fa-upload"></i>
+                <span>Upload Data</span>
+            </button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="status" id="status">Select a CSV or TXT file to upload...</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to save data to local storage
+        const saveToLocalStorage = (data) => {
+            try {
+                const existingData = JSON.parse(localStorage.getItem('qrData') || '[]');
+                const newData = [...existingData, ...data];
+                localStorage.setItem('qrData', JSON.stringify(newData));
+                return true;
+            } catch (error) {
+                console.error('Error saving to local storage:', error);
+                return false;
+            }
+        };
+
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            const status = document.getElementById('status');
+            const progressBar = document.getElementById('progressBar');
+            const uploadBtn = document.getElementById('uploadBtn');
+            
+            if (!file) {
+                status.textContent = 'Please select a file first';
+                return;
+            }
+
+            uploadBtn.disabled = true;
+            status.textContent = 'Reading file...';
+            
+            try {
+                const text = await file.text();
+                const rows = text.split('\n').slice(1); // Skip header row
+                const totalRows = rows.length;
+                let processed = 0;
+
+                status.textContent = `Processing ${totalRows} records...`;
+                
+                // Process data in chunks
+                const chunkSize = 50;
+                const dataToSave = [];
+                
+                for (let i = 0; i < rows.length; i++) {
+                    if (rows[i].trim()) {
+                        const [companyName, city, country, zipCode, businessId] = rows[i].split(',').map(field => field.trim());
+                        dataToSave.push({
+                            companyName,
+                            city,
+                            country,
+                            zipCode,
+                            businessId,
+                            completed: false,
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                    processed++;
+                    
+                    // Update progress every chunk
+                    if (processed % chunkSize === 0 || processed === totalRows) {
+                        const progress = (processed / totalRows) * 100;
+                        progressBar.style.width = progress + '%';
+                        status.textContent = `Processed ${processed} of ${totalRows} records...`;
+                    }
+                }
+
+                // Save all data at once
+                if (saveToLocalStorage(dataToSave)) {
+                    status.textContent = `Successfully saved ${dataToSave.length} records to local storage!`;
+                    progressBar.style.width = '100%';
+                } else {
+                    throw new Error('Failed to save data to local storage');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = 'Error: ' + error.message;
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html> 

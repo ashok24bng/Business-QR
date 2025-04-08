@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/transactions.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="gradient-text">Transactions</h1>
+            <div></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Transaction Filters -->
+        <div class="filters glass-card">
+            <div class="filter-group">
+                <label>Date Range</label>
+                <select class="filter-select">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Type</label>
+                <select class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="earning">Earnings</option>
+                    <option value="withdrawal">Withdrawals</option>
+                    <option value="transfer">Transfers</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select class="filter-select">
+                    <option value="all">All Status</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+            <button class="btn-primary">
+                <i class="fas fa-filter"></i>
+                Apply Filters
+            </button>
+        </div>
+
+        <!-- Transaction Summary -->
+        <div class="grid">
+            <div class="glass-card summary-card">
+                <div class="summary-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Earnings</h3>
+                    <div class="summary-amount">₹15,750.00</div>
+                </div>
+            </div>
+            <div class="glass-card summary-card">
+                <div class="summary-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Withdrawals</h3>
+                    <div class="summary-amount">₹8,000.00</div>
+                </div>
+            </div>
+            <div class="glass-card summary-card">
+                <div class="summary-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Transfers</h3>
+                    <div class="summary-amount">₹4,500.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="glass-card transactions-list">
+            <h2 class="gradient-text">Recent Transactions</h2>
+            
+            <div class="transaction-item">
+                <div class="transaction-icon success">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="transaction-info">
+                    <h4>QR Code Earnings</h4>
+                    <p>Mar 15, 2024 • 10:30 AM</p>
+                </div>
+                <div class="transaction-status status-success">Completed</div>
+                <div class="transaction-amount status-success">+₹250.00</div>
+            </div>
+
+            <div class="transaction-item">
+                <div class="transaction-icon error">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="transaction-info">
+                    <h4>Withdrawal to Bank</h4>
+                    <p>Mar 14, 2024 • 2:15 PM</p>
+                </div>
+                <div class="transaction-status status-error">Failed</div>
+                <div class="transaction-amount status-error">-₹2,000.00</div>
+            </div>
+
+            <div class="transaction-item">
+                <div class="transaction-icon pending">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="transaction-info">
+                    <h4>Transfer to Main Wallet</h4>
+                    <p>Mar 14, 2024 • 11:45 AM</p>
+                </div>
+                <div class="transaction-status status-pending">Pending</div>
+                <div class="transaction-amount status-pending">₹1,500.00</div>
+            </div>
+
+            <div class="transaction-item">
+                <div class="transaction-icon success">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="transaction-info">
+                    <h4>Referral Bonus</h4>
+                    <p>Mar 13, 2024 • 3:20 PM</p>
+                </div>
+                <div class="transaction-status status-success">Completed</div>
+                <div class="transaction-amount status-success">+₹100.00</div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="btn-secondary">
+                <i class="fas fa-chevron-left"></i>
+                Previous
+            </button>
+            <div class="page-numbers">
+                <button class="btn-secondary active">1</button>
+                <button class="btn-secondary">2</button>
+                <button class="btn-secondary">3</button>
+                <span>...</span>
+                <button class="btn-secondary">10</button>
+            </div>
+            <button class="btn-secondary">
+                Next
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/transactions.js"></script>
+</body>
+</html> 

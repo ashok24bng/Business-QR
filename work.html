@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/work.css">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/work.js"></script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="back-button">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="gradient-text">Work</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Trial Overlay -->
+        <div class="trial-overlay"></div>
+
+        <!-- Trial Earnings Section -->
+        <div class="glass-card trial-earnings">
+            <div class="earnings-header">
+                <h2 class="gradient-text">
+                    <i class="fas fa-clock"></i>
+                    <span id="planDuration">Free Trial</span>
+                </h2>
+                <div class="plan-badge">
+                    <span class="active-plan" id="currentPlan">Free Trial</span>
+                    <button class="upgrade-btn" title="Upgrade Plan">
+                        <i class="fas fa-crown"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="earnings-grid">
+                <div class="earnings-card">
+                    <h3>Earning Wallet</h3>
+                    <div class="amount">₹0.00</div>
+                </div>
+                <div class="earnings-card">
+                    <h3>Bonus Wallet</h3>
+                    <div class="amount">₹0.00</div>
+                </div>
+            </div>
+            <div class="stats-container">
+                <div class="progress-circle">
+                    <div class="counter-wrapper">
+                        <span class="day-number">0</span>
+                        <span class="target-count">/50</span>
+                    </div>
+                </div>
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <span class="stat-label">Today Data</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Data</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Worked Days</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-primary submit-btn" disabled>
+                Submit
+            </button>
+        </div>
+
+        <!-- Work Form -->
+        <div class="glass-card work-form">
+            <h2 class="gradient-text">Generate QR Code</h2>
+            <div class="form-group">
+                <div class="label-container">
+                    <label>Company Name</label>
+                    <span class="correct-data" id="correctCompanyName">Show Data For Typing</span>
+                </div>
+                <input type="text" id="companyName" required>
+            </div>
+            <div class="form-group">
+                <div class="label-container">
+                    <label>City</label>
+                    <span class="correct-data" id="correctCity">Show Data For Typing</span>
+                </div>
+                <input type="text" id="city" required>
+            </div>
+            <div class="form-group">
+                <div class="label-container">
+                    <label>Country</label>
+                    <span class="correct-data" id="correctCountry">Show Data For Typing</span>
+                </div>
+                <input type="text" id="country" required>
+            </div>
+            <div class="form-group">
+                <div class="label-container">
+                    <label>Zip Code</label>
+                    <span class="correct-data" id="correctZipCode">Show Data For Typing</span>
+                </div>
+                <input type="text" id="zipCode" maxlength="6" required>
+            </div>
+            <div class="form-group">
+                <div class="label-container">
+                    <label>Business ID</label>
+                    <span class="correct-data" id="correctBusinessId">Show Data For Typing</span>
+                </div>
+                <input type="text" id="businessId" required>
+            </div>
+            <button type="button" class="btn-primary" id="generateQRBtn">
+                <i class="fas fa-qrcode"></i>
+                Generate QR
+            </button>
+        </div>
+    </main>
+
+    <!-- QR Code Modal -->
+    <div id="qrDisplay" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 class="gradient-text">QR Code Generated</h3>
+            </div>
+            <div class="modal-body">
+                <div id="qrCode"></div>
+                <div id="timer" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plans Modal -->
+    <div id="planUpgradeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="gradient-text">Choose Your Plan</h2>
+            </div>
+            <div class="modal-body">
+                <div class="plans-grid">
+                    <!-- Basic Plan -->
+                    <div class="plan-card">
+                        <h4>Basic Plan</h4>
+                        <div class="plan-price">₹299</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 100 QR Codes Daily</li>
+                                <li><i class="fas fa-check"></i> Basic Support</li>
+                                <li><i class="fas fa-check"></i> Standard Earnings</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary upgrade-plan-btn" data-plan="Basic">
+                            <i class="fab fa-whatsapp"></i> Upgrade Now
+                        </button>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="plan-card">
+                        <h4>Premium Plan</h4>
+                        <div class="plan-price">₹499</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 200 QR Codes Daily</li>
+                                <li><i class="fas fa-check"></i> Priority Support</li>
+                                <li><i class="fas fa-check"></i> 2x Earnings</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary upgrade-plan-btn" data-plan="Premium">
+                            <i class="fab fa-whatsapp"></i> Upgrade Now
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="plan-card">
+                        <h4>Pro Plan</h4>
+                        <div class="plan-price">₹999</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check"></i> Unlimited QR Codes</li>
+                                <li><i class="fas fa-check"></i> 24/7 Support</li>
+                                <li><i class="fas fa-check"></i> 3x Earnings</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary upgrade-plan-btn" data-plan="Pro">
+                            <i class="fab fa-whatsapp"></i> Upgrade Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

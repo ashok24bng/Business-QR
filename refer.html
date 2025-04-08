@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer & Earn - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/refer.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+   <header class="page-header">
+        <div class="header-content">
+            <a href="dashboard.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+   
+            <a href="dashboard.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>       </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Referral Stats -->
+        <div class="grid">
+            <div class="glass-card stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Referrals</h3>
+                    <div class="stat-value">24</div>
+                </div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Earnings</h3>
+                    <div class="stat-value">₹2,400</div>
+                </div>
+            </div>
+            <div class="glass-card stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Referral Level</h3>
+                    <div class="stat-value">Gold</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Code Section -->
+        <div class="glass-card referral-code-section">
+            <h2 class="gradient-text">Your Referral Code</h2>
+            <div class="referral-code">
+                <span id="referralCode">QRCARD123</span>
+                <button class="btn-secondary" onclick="copyReferralCode()">
+                    <i class="fas fa-copy"></i>
+                    Copy Code
+                </button>
+            </div>
+            <div class="share-buttons">
+                <button class="btn-primary" onclick="shareWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    Share on WhatsApp
+                </button>
+                <button class="btn-primary" onclick="shareOnTelegram()">
+                    <i class="fab fa-telegram"></i>
+                    Share on Telegram
+                </button>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="glass-card how-it-works">
+            <h2 class="gradient-text">How It Works</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>Share Your Code</h3>
+                    <p>Share your unique referral code with friends and family</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Friend Signs Up</h3>
+                    <p>They register using your referral code</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Earn Rewards</h3>
+                    <p>You get 10% of plan amount as referral bonus when they subscribe</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral History -->
+        <div class="glass-card referral-history">
+            <h2 class="gradient-text">Recent Referrals</h2>
+            <div class="referral-list">
+                <div class="referral-item">
+                    <div class="referral-user">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <h4>Rahul Sharma</h4>
+                            <p>Joined Mar 15, 2024</p>
+                        </div>
+                    </div>
+                    <div class="referral-status status-success">
+                        <i class="fas fa-check-circle"></i>
+                        Completed
+                    </div>
+                    <div class="referral-reward">+₹100</div>
+                </div>
+
+                <div class="referral-item">
+                    <div class="referral-user">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <h4>Priya Patel</h4>
+                            <p>Joined Mar 14, 2024</p>
+                        </div>
+                    </div>
+                    <div class="referral-status status-success">
+                        <i class="fas fa-check-circle"></i>
+                        Completed
+                    </div>
+                    <div class="referral-reward">+₹100</div>
+                </div>
+
+                <div class="referral-item">
+                    <div class="referral-user">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <h4>Amit Kumar</h4>
+                            <p>Joined Mar 13, 2024</p>
+                        </div>
+                    </div>
+                    <div class="referral-status status-pending">
+                        <i class="fas fa-clock"></i>
+                        Pending
+                    </div>
+                    <div class="referral-reward pending">+₹100</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/refer.js"></script>
+</body>
+</html> 

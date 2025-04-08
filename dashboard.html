@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - QR Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- SweetAlert2 for notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhUSWi8CfYzuKjTI_Ep_h6BkQT51GEjjw",
+            authDomain: "business-qr-51b78.firebaseapp.com",
+            projectId: "business-qr-51b78",
+            storageBucket: "business-qr-51b78.firebasestorage.app",
+            messagingSenderId: "484306511086",
+            appId: "1:484306511086:web:2b721ce83d72220dc8bfff",
+            measurementId: "G-RKCQV6ER06"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // User is not logged in, redirect to index page
+                window.location.href = 'index.html';
+            } else {
+                // Update user greeting
+                document.getElementById('userGreeting').textContent = user.displayName || 'User';
+                document.getElementById('userName').textContent = user.displayName || 'User';
+            }
+        });
+
+        // Logout function
+        window.handleLogout = async () => {
+            try {
+                await signOut(auth);
+                // Show success message
+                Swal.fire({
+                    title: 'Logged Out!',
+                    text: 'You have been successfully logged out.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect to index page
+                    window.location.href = 'index.html';
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to logout. Please try again.',
+                    icon: 'error'
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <nav class="mobile-nav">
+            <a href="dashboard.html" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="work.html" class="mobile-nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Work</span>
+            </a>
+            <a href="wallet.html" class="mobile-nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="transactions.html" class="mobile-nav-item">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </a>
+            <a href="profile.html" class="mobile-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <button onclick="handleLogout()" class="mobile-nav-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Animated Background -->
+        <div class="animated-bg"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar glass-effect">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR Card</span>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h3 id="userName">Loading...</h3>
+                    <p id="userPlan" class="gradient-text">Free Plan</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="work.html" class="nav-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Work</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+                <a href="transactions.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="refer.html" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Refer & Earn</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="https://wa.me/+919876543210" target="_blank" class="nav-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            <button class="logout-button" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header glass-effect">
+                <h1>Welcome Back, <span id="userGreeting">User</span>!</h1>
+                <div class="header-actions">
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card glass-effect">
+                    <div class="stat-icon" style="background: var(--primary-gradient)">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Today's QR Codes</h3>
+                        <p id="todayQR">0</p>
+                        <small id="qrPercentage" class="stat-change">
+                            <i class="fas fa-arrow-up"></i> 0% from yesterday
+                        </small>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-effect">
+                    <div class="stat-icon" style="background: var(--secondary-gradient)">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total QR Codes</h3>
+                        <p id="totalQR">0</p>
+                        <small id="totalQRPercentage" class="stat-change">
+                            <i class="fas fa-arrow-up"></i> 0% this week
+                        </small>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-effect">
+                    <div class="stat-icon" style="background: var(--accent-gradient)">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Today's Earnings</h3>
+                        <p id="todayEarnings">₹0.00</p>
+                        <small id="earningsPercentage" class="stat-change">
+                            <i class="fas fa-arrow-up"></i> 0% from yesterday
+                        </small>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-effect">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #20bf55 0%, #01baef 100%)">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Earnings</h3>
+                        <p id="totalEarnings">₹0.00</p>
+                        <small id="totalEarningsPercentage" class="stat-change">
+                            <i class="fas fa-arrow-up"></i> 0% this month
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Sections -->
+            <div class="dashboard-grid">
+                <!-- Quick Actions -->
+                <div class="dashboard-card glass-effect">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions">
+                        <a href="work.html" class="action-button">
+                            <i class="fas fa-plus"></i>
+                            <span>Generate QR</span>
+                        </a>
+                        <a href="wallet.html" class="action-button">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Withdraw</span>
+                        </a>
+                        <a href="refer.html" class="action-button">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Share & Earn</span>
+                        </a>
+                        <a href="#" onclick="upgradePlan()" class="action-button">
+                            <i class="fas fa-crown"></i>
+                            <span>Upgrade Plan</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card glass-effect">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="recentActivity">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>QR Code Generated</h4>
+                                <p>Company: ABC Corp</p>
+                                <small>2 minutes ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>Withdrawal Processed</h4>
+                                <p>Amount: ₹500.00</p>
+                                <small>1 hour ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>Referral Bonus</h4>
+                                <p>Earned: ₹100.00</p>
+                                <small>2 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Progress -->
+                <div class="dashboard-card glass-effect">
+                    <h2>Daily Progress</h2>
+                    <div class="progress-info">
+                        <div class="progress-stats">
+                            <div class="progress-stat">
+                                <h4>QR Codes Today</h4>
+                                <p><span id="currentQR">0</span>/<span id="maxQR">100</span></p>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="dailyProgress" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referral Stats -->
+                <div class="dashboard-card glass-effect">
+                    <h2>Referral Stats</h2>
+                    <div class="referral-stats">
+                        <div class="referral-stat">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-details">
+                                <h4>Total Referrals</h4>
+                                <p id="totalReferrals">5</p>
+                            </div>
+                        </div>
+                        <div class="referral-stat">
+                            <i class="fas fa-gift"></i>
+                            <div class="stat-details">
+                                <h4>Referral Earnings</h4>
+                                <p id="referralEarnings">₹500.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-referral" onclick="window.location.href='refer.html'">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Invite Friends</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/user-data.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html> 

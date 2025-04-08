@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register - QR Card</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/login.css">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Global Functions -->
+    <script>
+        // Toggle between login and register forms
+        window.toggleForms = function() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const toggleText = document.getElementById('toggleText');
+            const mainTitle = document.querySelector('.auth-container h1');
+            const forgotPassword = document.querySelector('.forgot-password');
+            
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                toggleText.innerHTML = 'Don\'t have an account? <a href="#" onclick="toggleForms()">Register</a>';
+                mainTitle.textContent = 'Welcome Back!';
+                forgotPassword.style.display = 'block';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                toggleText.innerHTML = 'Already have an account? <a href="#" onclick="toggleForms()">Login</a>';
+                mainTitle.textContent = 'Create Account';
+                forgotPassword.style.display = 'none';
+            }
+        }
+
+        // Close error modal
+        window.closeErrorModal = function() {
+            const errorModal = document.getElementById('errorModal');
+            errorModal.classList.remove('show');
+        }
+
+        // Show error modal
+        window.showErrorModal = function(message) {
+            const errorModal = document.getElementById('errorModal');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorModal.classList.add('show');
+        }
+
+        // Password visibility toggle
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.querySelector(`[data-input="${inputId}"] i`);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+        <i class="fas fa-chevron-left"></i>
+        Back to Home
+    </a>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="glass-card auth-container">
+            <h1 class="gradient-text">Welcome Back!</h1>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input-group">
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword')" data-input="loginPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label for="registerName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="registerName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="registerEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="registerPhone" required placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="registerCity"><i class="fas fa-city"></i> City</label>
+                    <input type="text" id="registerCity" required placeholder="Enter your city">
+                </div>
+                <div class="form-group">
+                    <label for="registerReferral"><i class="fas fa-ticket-alt"></i> Referral Code (Optional)</label>
+                    <input type="text" id="registerReferral" placeholder="Enter referral code if any">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input-group">
+                        <input type="password" id="registerPassword" required placeholder="Create a password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('registerPassword')" data-input="registerPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small class="password-hint">Minimum 8 characters with numbers and symbols</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                    <div class="password-input-group">
+                        <input type="password" id="registerConfirmPassword" required placeholder="Confirm your password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('registerConfirmPassword')" data-input="registerConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group terms">
+                    <input type="checkbox" id="registerTerms" required>
+                    <label for="registerTerms">I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </button>
+            </form>
+
+            <div class="auth-options">
+                <p id="toggleText">Don't have an account? <a href="#" onclick="toggleForms()">Register</a></p>
+                <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 class="gradient-text">Error</h3>
+                <button class="close-btn" onclick="closeErrorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeErrorModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Script -->
+    <script type="module">
+        import { auth, db, loginUser, registerUser } from '/js/firebase-config.js';
+        import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.querySelector('.login-btn');
+            const originalText = loginBtn.innerHTML;
+
+            // Validation
+            if (!email || !password) {
+                showErrorModal('Please enter both email and password');
+                return;
+            }
+
+            try {
+                // Show loading state
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                loginBtn.disabled = true;
+
+                // Login user
+                const user = await loginUser(email, password);
+                
+                // Store user ID
+                localStorage.setItem('userId', user.uid);
+                
+                // Show success and redirect
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful!',
+                    text: 'Redirecting to your dashboard...',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // Reset button
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+                
+                // Show appropriate error
+                const errorMap = {
+                    'auth/invalid-email': 'Invalid email address',
+                    'auth/user-disabled': 'Account disabled',
+                    'auth/user-not-found': 'Account not found',
+                    'auth/wrong-password': 'Incorrect password',
+                    'auth/too-many-requests': 'Too many attempts. Try later.',
+                    'auth/network-request-failed': 'Network error'
+                };
+                
+                showErrorModal(errorMap[error.code] || 'Login failed. Please try again.');
+            }
+        });
+
+        // Registration form handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const fullName = document.getElementById('registerName').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const city = document.getElementById('registerCity').value.trim();
+            const referralCode = document.getElementById('registerReferral').value.trim();
+            const registerBtn = document.querySelector('#registerForm .btn-primary');
+            const originalText = registerBtn.innerHTML;
+
+            // Validation
+            if (!email || !password || !confirmPassword || !fullName || !phone || !city) {
+                showErrorModal('Please fill all required fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showErrorModal('Passwords do not match');
+                return;
+            }
+
+            if (password.length < 8) {
+                showErrorModal('Password must be at least 8 characters');
+                return;
+            }
+
+            if (!document.getElementById('registerTerms').checked) {
+                showErrorModal('You must accept the terms and conditions');
+                return;
+            }
+
+            try {
+                // Show loading state
+                registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+                registerBtn.disabled = true;
+
+                // Prepare user data
+                const userData = {
+                    fullName,
+                    email,
+                    phoneNumber: phone,
+                    city,
+                    referralCode: referralCode || null,
+                    registeredOn: new Date().toISOString(),
+                    balance: 0,
+                    totalEarnings: 0,
+                    qrCodesGenerated: 0,
+                    totalScans: 0,
+                    plan: {
+                        name: 'Free Trial',
+                        dailyLimit: 50,
+                        rate: 5
+                    },
+                    wallet: {
+                        earning: 0,
+                        bonus: 0,
+                        main: 0
+                    }
+                };
+
+                // Register user
+                const user = await registerUser(email, password, userData);
+                
+                // Store additional data in Firestore
+                const userRef = doc(db, 'users', user.uid);
+                await setDoc(userRef, userData);
+                
+                // Store in localStorage
+                localStorage.setItem('userId', user.uid);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Show success and redirect
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Registration Complete!',
+                    text: 'Your account has been created successfully',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                // Reset button
+                registerBtn.innerHTML = originalText;
+                registerBtn.disabled = false;
+                
+                // Show appropriate error
+                const errorMap = {
+                    'auth/email-already-in-use': 'Email already in use',
+                    'auth/invalid-email': 'Invalid email address',
+                    'auth/weak-password': 'Password too weak',
+                    'auth/operation-not-allowed': 'Operation not allowed'
+                };
+                
+                showErrorModal(errorMap[error.code] || 'Registration failed. Please try again.');
+            }
+        });
+
+        // Check auth state on load
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
